@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spotify</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+	<header>
+
+		<nav class="be-red white large-padding">
+
+			<ul class="no-list row center-xs">
+
+				<li class="col-md" id="logo">
+						<%= link_to 'Spotify', root_path %>
+				</li>
+
+				<li class="col-md" id="logo">
+
+					<% if signed_in? %>
+				  		<%= link_to 'Canciones', songs_path %>
+					<% else %>
+				  		<%= link_to 'Canciones', root_path %>
+					<% end %>
+
+				</li>
+
+				<li class="col-md" id="logo">
+
+					<% if signed_in? %>
+				  		<%= link_to 'Profile', users_profile_path %>
+					<% else %>
+				  		<%= link_to 'Profile', sign_in_path %>
+					<% end %>
+
+				</li>
+
+				<% if signed_in? %>
+
+					<% if current_user.admin? %>
+
+						<li class="col-md" id="logo">
+
+							<% if current_user.admin? and signed_in? %>
+						  		<%= link_to 'Users', users_admin_path %>
+							<% else %>
+						  		<%= link_to 'Users', songs_path %>
+							<% end %>
+						</li>
+
+					<% end %>
+
+				<% end %>
+
+				<li class="col-md">
+
+					<% if signed_in? %>
+				  		Signed in as: <%= current_user.email %>
+				  		<%= button_to 'Sign out', sign_out_path, method: :delete %>
+					<% else %>
+				  		<%= link_to 'Sign in', sign_in_path %>
+					<% end %>
+				</li>
+
+
+			</ul>
+		</nav>
+	</header>
+
+	    
+    <section>
+
+    	<div id="flash">
+      		<% flash.each do |key, value| %>
+        		<div class="flash <%= key %>"><%= value %></div>
+      		<% end %>
+   		 </div>
+
+
+    <%= yield %>
+    </section>
+    
+  </body>
+</html>
